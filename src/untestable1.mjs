@@ -19,10 +19,12 @@ export function daysUntilChristmas() {
 // In production, the method can be given the current time instead.
 
 function invalidType(input) {
-  return (typeof input) !== "object"
-    || (typeof input.getDate()) !== "number"
-    || (typeof input.getMonth()) !== "number"
-    || (typeof input.getFullYear()) !== "number"
+  return (
+    typeof input !== "object" ||
+    typeof input.getDate() !== "number" ||
+    typeof input.getMonth() !== "number" ||
+    typeof input.getFullYear() !== "number"
+  );
 }
 
 export function testableDaysUntilChristmas(now) {

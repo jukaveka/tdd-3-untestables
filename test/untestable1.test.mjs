@@ -16,7 +16,7 @@ describe("Untestable 1: days until Christmas", () => {
   test("throws error with no date provided", () => {
     let testDate;
     expect(testableDaysUntilChristmas.bind(null, testDate)).to.throw("date missing");
-  })
+  });
 
   test("throws error with invalid type of input", () => {
     const testDate = "2023-12-01";
