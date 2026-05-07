@@ -17,3 +17,14 @@ export function daysUntilChristmas() {
 // The way to make this testable should be giving the "now" time as a parameter to this method
 // That way, we can write tests where the method is called with same time always
 // In production, the method can be given the current time instead.
+
+export function testableDaysUntilChristmas() {
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const christmasDay = new Date(now.getFullYear(), 12 - 1, 25);
+  if (today.getTime() > christmasDay.getTime()) {
+    christmasDay.setFullYear(new Date().getFullYear() + 1);
+  }
+  const diffMillis = christmasDay.getTime() - today.getTime();
+  return Math.floor(diffMillis / millisPerDay);
+}
