@@ -18,9 +18,18 @@ export function daysUntilChristmas() {
 // That way, we can write tests where the method is called with same time always
 // In production, the method can be given the current time instead.
 
+function invalidType(input) {
+  return (typeof input) !== "object"
+    || (typeof input.getDate()) !== "number"
+    || (typeof input.getMonth()) !== "number"
+    || (typeof input.getFullYear()) !== "number"
+}
+
 export function testableDaysUntilChristmas(now) {
   if (!now) {
     throw new Error("date missing");
+  } else if (invalidType(now)) {
+    throw new Error("invalid type of date");
   }
 
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
