@@ -20,11 +20,9 @@ describe("Untestable 3: CSV file parsing", () => {
 
       expect(data).to.include("jimothy", "expected value not present");
     })
-  });
 
-  test("todo", async () => {
-    try {
-      expect(await parsePeopleCsv("people.csv")).to.deep.equal([]);
-    } catch (e) {}
+    test("throws error with non-existent file", async () => {
+      await expect(testableReadFile.bind(null, "")).rejects.toThrowError("invalid file path or non-existent file");
+    })
   });
 });
