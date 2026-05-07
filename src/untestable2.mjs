@@ -1,4 +1,4 @@
-function diceRoll() {
+export function diceRoll() {
   const min = 1;
   const max = 6;
   return Math.floor(Math.random() * (max + 1 - min) + min);
@@ -15,7 +15,6 @@ export function diceHandValue() {
     return Math.max(die1, die2);
   }
 }
-
 
 // I think the core testability issues here are following
 
