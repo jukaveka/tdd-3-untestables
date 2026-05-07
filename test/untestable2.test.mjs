@@ -60,5 +60,11 @@ describe("Untestable 2: a dice game", () => {
 
       expect(die).to.be.most(max, "return value is greater than maximum value given");
     });
+
+    test("throws error when minimum is not a number", () => {
+      min = "yksi";
+
+      expect(testableDiceRoll.bind(null,min, max)).to.throw("minimum has to be a number");
+    })
   });
 });
