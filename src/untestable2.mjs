@@ -46,6 +46,10 @@ export function diceHandValue() {
 // Due to this, I will do both of the suggestions above (unless process makes me change my mind).
 
 export function testableDiceHandValue(die1, die2) {
+  if ((typeof die1) !== "number" || (typeof die2) !== "number") {
+    throw new Error("die is not a number")
+  }
+
   if (die1 === die2) {
     // one pair
     return 100 + die1;
