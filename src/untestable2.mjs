@@ -44,6 +44,10 @@ export function diceHandValue() {
 // However, to me this feels like we are coupling diceHandValue to diceRoll.
 // Due to this, I will do both of the suggestions above (unless process makes me change my mind).
 
+export function testableDiceRoll(min, max) {
+  return Math.floor(Math.random() * (max + 1 - min) + min);
+}
+
 export function testableDiceHandValue(die1, die2) {
   if (typeof die1 !== "number" || typeof die2 !== "number") {
     throw new Error("die is not a number");

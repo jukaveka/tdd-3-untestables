@@ -1,6 +1,6 @@
-import { describe, test } from "vitest";
+import { beforeEach, describe, test } from "vitest";
 import { expect } from "chai";
-import { diceRoll, testableDiceHandValue } from "../src/untestable2.mjs";
+import { testableDiceHandValue, testableDiceRoll } from "../src/untestable2.mjs";
 
 describe("Untestable 2: a dice game", () => {
   describe("Dice hand value", () => {
@@ -36,18 +36,29 @@ describe("Untestable 2: a dice game", () => {
   });
 
   describe("Dice roll", () => {
+    let min;
+    let max;
+    beforeEach(() => {
+      min = 1;
+      max = 6;
+    })
+
     test("returns a number", () => {
-      const die = diceRoll(1, 6);
+      const die = testableDiceRoll(min, max);
 
       expect(die).to.be.a("number");
     });
 
     test("returns a value greater then minimum", () => {
-      const min = 1;
-      const max = 6;
-      const die = diceRoll(min, max);
+      const die = testableDiceRoll(min, max);
 
-      expect(die).to.be.above(min);
+      expect(die).to.be.least(min, "return value is lesser than minimun value given");
+    });
+
+    test("returns a value lesser then maximum", () => {
+      const die = testableDiceRoll(min, max);
+
+      expect(die).to.be.most(max, "return value is greater than maximum value given");
     });
   });
 });
