@@ -10,3 +10,10 @@ export function daysUntilChristmas() {
   const diffMillis = christmasDay.getTime() - today.getTime();
   return Math.floor(diffMillis / millisPerDay);
 }
+
+// The issue with testing this code is that it uses current time
+// This time will change every time test is run, so it's hard to make assertions regarding the result.
+
+// The way to make this testable should be giving the "now" time as a parameter to this method
+// That way, we can write tests where the method is called with same time always
+// In production, the method can be given the current time instead.
