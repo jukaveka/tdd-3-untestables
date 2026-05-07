@@ -12,4 +12,9 @@ describe("Untestable 1: days until Christmas", () => {
     const testDate = new Date(2025, 12 - 1, 22, 3, 0, 0, 0);
     expect(testableDaysUntilChristmas(testDate)).to.be.equal(3, "kolme yötä jouluun on...");
   });
+
+  test("throws error with no date provided", () => {
+    let testDate;
+    expect(testableDaysUntilChristmas(testDate)).to.throw("date missing");
+  })
 });
