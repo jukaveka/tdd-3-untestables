@@ -48,5 +48,13 @@ describe("Untestable 3: CSV file parsing", () => {
 
       expect(people).to.deep.equal(expectedPeople);
     })
+
+
+    test("can parse people with no age included", () => {
+      const people = testableParsePeopleCsv(csvData);
+      const ageless = people.filter((person) => !person.age)
+
+      expect(ageless).to.not.have.key("age");
+    })
   })
 });
