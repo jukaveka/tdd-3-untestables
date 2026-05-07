@@ -37,9 +37,17 @@ describe("Untestable 2: a dice game", () => {
 
   describe("Dice roll", () => {
     test("returns a number", () => {
-      const die = diceRoll();
+      const die = diceRoll(1, 6);
 
       expect(die).to.be.a("number");
+    });
+
+    test("returns a value greater then minimum", () => {
+      const min = 1;
+      const max = 6;
+      const die = diceRoll(min, max);
+
+      expect(die).to.be.above(min);
     });
   });
 });
