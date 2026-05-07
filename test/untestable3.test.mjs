@@ -33,9 +33,20 @@ describe("Untestable 3: CSV file parsing", () => {
     })
 
     test("returns an object", () => {
-      const peopleCsv = testableParsePeopleCsv(csvData);
+      const people = testableParsePeopleCsv(csvData);
 
-      expect(peopleCsv).to.be.a("array");
+      expect(people).to.be.a("array");
+    })
+
+    test("returns correct data", () => {
+      const people = testableParsePeopleCsv(csvData);
+      const expectedPeople = [
+        {firstName: "Loid", lastName: "Forger", gender: "m"},
+        {firstName: "Anya", lastName: "Forger", gender: "f", age: 6},
+        {firstName: "Yor", lastName: "Forger", gender: "f", age: 27}
+      ]
+
+      expect(people).to.deep.equal(expectedPeople);
     })
   })
 });
