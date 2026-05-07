@@ -21,5 +21,11 @@ describe("Untestable 2: a dice game", () => {
       const higher = 5
       expect(testableDiceHandValue(lower, higher)).to.equal(higher);
     });
+
+    test("returns die value + 100 with same dies", () => {
+      const die1 = 1
+      const die2 = 1
+      expect(testableDiceHandValue(die1, die2)).to.equal(die1 + 100);
+    });
   })
 });
