@@ -10,9 +10,15 @@ import { testableReadFile, parsePeopleCsv } from "../src/untestable3.mjs";
 describe("Untestable 3: CSV file parsing", () => {
   describe("Reading file", () => {
     test("returns a string", async () => {
-      const data = await testableReadFile("data.csv")
+      const data = await testableReadFile("./test/testFiles/data.csv")
 
       expect(data).to.be.a("string");
+    })
+
+    test("contains expected value", async () => {
+      const data = await testableReadFile("./test/testFiles/data.csv")
+
+      expect(data).to.include("jimothy", "expected value not present");
     })
   });
 
