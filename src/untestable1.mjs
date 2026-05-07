@@ -18,8 +18,7 @@ export function daysUntilChristmas() {
 // That way, we can write tests where the method is called with same time always
 // In production, the method can be given the current time instead.
 
-export function testableDaysUntilChristmas() {
-  const now = new Date();
+export function testableDaysUntilChristmas(now) {
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const christmasDay = new Date(now.getFullYear(), 12 - 1, 25);
   if (today.getTime() > christmasDay.getTime()) {
