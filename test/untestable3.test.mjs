@@ -1,6 +1,6 @@
-import { describe, test } from "vitest";
+import { describe, beforeEach, test } from "vitest";
 import { expect } from "chai";
-import { testableReadFile, parsePeopleCsv } from "../src/untestable3.mjs";
+import { testableReadFile, testableParsePeopleCsv } from "../src/untestable3.mjs";
 
 // example input:
 // Loid,Forger,,Male
@@ -25,4 +25,17 @@ describe("Untestable 3: CSV file parsing", () => {
       await expect(testableReadFile.bind(null, "")).rejects.toThrowError("invalid file path or non-existent file");
     })
   });
+
+  describe("Parsing peoples", () => {
+    let csvData;
+    beforeEach(async () => {
+      csvData = await testableReadFile("./test/testFiles/ostania.csv");
+    })
+
+    test("returns an object", () => {
+      const peopleCsv = testableParsePeopleCsv(csvData);
+
+      expect(peopleCsv).to.be.a("array");
+    })
+  })
 });
