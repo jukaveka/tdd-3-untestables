@@ -29,3 +29,6 @@ export async function parsePeopleCsv(filePath) {
 // For reading the file, I'll go with the suggestion in part 3 and just use a test file
 // in this directory.
 
+export async function testableReadFile(filePath) {
+  return await readFile(filePath, { encoding: "utf8" });
+};

@@ -1,6 +1,6 @@
 import { describe, test } from "vitest";
 import { expect } from "chai";
-import { parsePeopleCsv } from "../src/untestable3.mjs";
+import { testableReadFile, parsePeopleCsv } from "../src/untestable3.mjs";
 
 // example input:
 // Loid,Forger,,Male
@@ -9,8 +9,8 @@ import { parsePeopleCsv } from "../src/untestable3.mjs";
 
 describe("Untestable 3: CSV file parsing", () => {
   describe("Reading file", () => {
-    test("returns a string", () => {
-      const data = readFile("data.csv")
+    test("returns a string", async () => {
+      const data = await testableReadFile("data.csv")
 
       expect(data).to.be.a("string");
     })
