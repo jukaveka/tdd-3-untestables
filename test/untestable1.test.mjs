@@ -15,6 +15,6 @@ describe("Untestable 1: days until Christmas", () => {
 
   test("throws error with no date provided", () => {
     let testDate;
-    expect(testableDaysUntilChristmas(testDate)).to.throw("date missing");
+    expect(testableDaysUntilChristmas.bind(testDate)).to.throw("date missing");
   })
 });
