@@ -15,3 +15,32 @@ export function diceHandValue() {
     return Math.max(die1, die2);
   }
 }
+
+
+// I think the core testability issues here are following
+
+// The randomness introduced by diceRoll
+//
+// diceRoll uses random number between 0 and 1 to imitate dice roll.
+// Due to this, we can't control the exact values that diceHandValue receives.
+// This makes it impossible to consistently test diceHandValue with specific expected values.
+
+// Things that could be done to address this
+//
+// 1. Make dies into parameter of diceHandValue
+//
+//    This would allow us to test specific values for diceHandValue
+
+// 2. Test the randomness of diceRoll with property based testing
+//
+//    With diceRoll, we can't test specific values, since there are no inputs,
+//    and random number is used as multiplier in final calculation
+//
+//    To address this, we should instead test that the answer contains certain properties.
+//    These could be
+//    - return value is number
+//    - return value is between 1 and 6
+
+// We could test diceHandValue with property based testing, and not change the code.
+// However, to me this feels like we are coupling diceHandValue to diceRoll.
+// Due to this, I will do both of the suggestions above (unless process makes me change my mind).
