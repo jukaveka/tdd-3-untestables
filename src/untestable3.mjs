@@ -19,3 +19,12 @@ export async function parsePeopleCsv(filePath) {
     return person;
   });
 }
+
+// The function both reads data and parses CSV based on the data. This makes testing it already weird,
+// since you can't really test the file reading based on the return value.
+
+// The file reading should be separated to another function,
+// allowing us to test the parsing of CSV without file operations
+
+// For reading the file, I'll go with the suggestion in part 3 and just use a test file
+// in this directory.
