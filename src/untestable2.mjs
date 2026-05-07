@@ -45,6 +45,10 @@ export function diceHandValue() {
 // Due to this, I will do both of the suggestions above (unless process makes me change my mind).
 
 export function testableDiceRoll(min, max) {
+  if ((typeof min !== "number")) {
+    throw new Error("minimum has to be a number");
+  }
+
   return Math.floor(Math.random() * (max + 1 - min) + min);
 }
 
