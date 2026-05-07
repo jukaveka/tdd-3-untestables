@@ -1,10 +1,19 @@
 import { describe, test } from "vitest";
 import { expect } from "chai";
-import { diceHandValue } from "../src/untestable2.mjs";
+import { testableDiceHandValue } from "../src/untestable2.mjs";
 
 describe("Untestable 2: a dice game", () => {
-  test("todo", () => {
-    // TODO: write proper tests
-    expect(diceHandValue()).to.be.a("number");
-  });
+  describe("Dice hand value", () => {
+    test("returns a number with different values", () => {
+      const die1 = 1
+      const die2 = 2
+      expect(testableDiceHandValue(die1, die2)).to.be.a("number");
+    });
+
+    test("returns a number with different values", () => {
+      const die1 = 1
+      const die2 = 1
+      expect(testableDiceHandValue(die1, die2)).to.be.a("number");
+    });
+  })
 });

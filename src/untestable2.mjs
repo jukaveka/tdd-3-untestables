@@ -45,9 +45,7 @@ export function diceHandValue() {
 // However, to me this feels like we are coupling diceHandValue to diceRoll.
 // Due to this, I will do both of the suggestions above (unless process makes me change my mind).
 
-export function testableDiceHandValue() {
-  const die1 = diceRoll();
-  const die2 = diceRoll();
+export function testableDiceHandValue(die1, die2) {
   if (die1 === die2) {
     // one pair
     return 100 + die1;
