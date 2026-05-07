@@ -44,3 +44,15 @@ export function diceHandValue() {
 // We could test diceHandValue with property based testing, and not change the code.
 // However, to me this feels like we are coupling diceHandValue to diceRoll.
 // Due to this, I will do both of the suggestions above (unless process makes me change my mind).
+
+export function testableDiceHandValue() {
+  const die1 = diceRoll();
+  const die2 = diceRoll();
+  if (die1 === die2) {
+    // one pair
+    return 100 + die1;
+  } else {
+    // high die
+    return Math.max(die1, die2);
+  }
+}
