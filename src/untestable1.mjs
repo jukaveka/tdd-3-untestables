@@ -19,6 +19,10 @@ export function daysUntilChristmas() {
 // In production, the method can be given the current time instead.
 
 export function testableDaysUntilChristmas(now) {
+  if (!now) {
+    throw new Error("date missing");
+  }
+
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const christmasDay = new Date(now.getFullYear(), 12 - 1, 25);
   if (today.getTime() > christmasDay.getTime()) {
