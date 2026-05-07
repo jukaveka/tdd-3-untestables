@@ -27,5 +27,11 @@ describe("Untestable 2: a dice game", () => {
       const die2 = 1
       expect(testableDiceHandValue(die1, die2)).to.equal(die1 + 100);
     });
+
+    test("throws error when die is not a number", () => {
+      const die1 = 1
+      const die2 = "kaksi"
+      expect(testableDiceHandValue.bind(null, die1, die2)).to.throw("die is not a number")
+    });
   })
 });
