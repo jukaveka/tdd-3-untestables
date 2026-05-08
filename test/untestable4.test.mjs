@@ -12,7 +12,8 @@ describe("Untestable 4: enterprise application", () => {
       users = PostgresUserDao.getInstance();
     })
 
-    afterEach(() => {
+    afterEach(async () => {
+      await users.db.query("DELETE FROM users");
       PostgresUserDao.getInstance().close();
     });
   
@@ -60,7 +61,7 @@ describe("Untestable 4: enterprise application", () => {
 
       test("finds 0 users if id doesn't match", async () => {
         const user = await users.getById(1);
-        expect(user).to.be.empty();
+        expect(user).to.be.a("null");
       })
     })
 
