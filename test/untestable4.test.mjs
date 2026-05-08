@@ -63,6 +63,15 @@ describe("Untestable 4: enterprise application", () => {
         const user = await users.getById(1);
         expect(user).to.be.a("null");
       })
+
+      test("returns an object if user exists", async () => {
+        const userId = 1;
+        const passwordHash = argon2.hashSync("password");
+        await users.save({userId, passwordHash});
+
+        const user = await users.getById(1);
+        expect(user).to.be.a("object");
+      })
     })
 
     describe("Password service", () => {
