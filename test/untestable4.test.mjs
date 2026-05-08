@@ -1,112 +1,122 @@
-import { afterEach, beforeEach, describe, test } from "vitest";
+import { afterEach, beforeAll, beforeEach, describe, test } from "vitest";
 import { PasswordService, PostgresUserDao } from "../src/untestable4.mjs";
 import argon2 from "@node-rs/argon2";
 import { execSync } from "node:child_process";
 import { expect } from "chai";
 
 describe("Untestable 4: enterprise application", () => {
-    describe("User data access object", () => {    let service;
+  describe("User data access object", () => {
     let users;
-    
+
     beforeEach(() => {
       users = PostgresUserDao.getInstance();
-    })
+    });
 
     afterEach(async () => {
       await users.db.query("DELETE FROM users");
       PostgresUserDao.getInstance().close();
     });
-  
-      test ("saves new user", async () => {
-        const userId = 1;
-        const passwordHash = argon2.hashSync("password");
 
-        await users.save({ userId, passwordHash });
+    test("saves new user", async () => {
+      const userId = 1;
+      const passwordHash = argon2.hashSync("password");
 
-        const result = await users.db.query("SELECT user_id FROM users");
+      await users.save({ userId, passwordHash });
 
-        expect(result.rows.length).to.equal(1);
-      })
+      const result = await users.db.query("SELECT user_id FROM users");
 
-      test ("saves values correctly", async () => {
-        const userId = 1;
-        const passwordHash = argon2.hashSync("password");
-        const user = {"userid": userId, "passwordhash": passwordHash};
+      expect(result.rows.length).to.equal(1);
+    });
 
-        await users.save({ userId, passwordHash });
+    test("saves values correctly", async () => {
+      const userId = 1;
+      const passwordHash = argon2.hashSync("password");
+      const user = { userid: userId, passwordhash: passwordHash };
 
-        const result = await users.db.query(`SELECT user_id as userId, password_hash as passwordHash FROM users WHERE user_id = $1`, [userId]);
+      await users.save({ userId, passwordHash });
 
-        expect(result.rows[0]).to.deep.equal(user);
-      })
+      const result = await users.db.query(
+        `SELECT user_id as userId, password_hash as passwordHash FROM users WHERE user_id = $1`,
+        [userId],
+      );
 
-      test ("updates values if user already exists", async () => {
-        const userId = 1;
-        const passwordHash = argon2.hashSync("password");
-        const oldUser = {userId, passwordHash};
-        await users.save(oldUser);
+      expect(result.rows[0]).to.deep.equal(user);
+    });
 
-        const savedUsers = await users.db.query(`SELECT user_id, password_hash FROM users WHERE user_id = $1`, [userId]);
-        let user = savedUsers.rows.map((row) => {return {userId: row.user_id, passwordHash: row.password_hash}})[0];
+    test("updates values if user already exists", async () => {
+      const userId = 1;
+      const passwordHash = argon2.hashSync("password");
+      const oldUser = { userId, passwordHash };
+      await users.save(oldUser);
 
-        const newPasswordHash = argon2.hashSync("salasana");
-        user.passwordHash = newPasswordHash;
-        await users.save(user);
+      const savedUsers = await users.db.query(`SELECT user_id, password_hash FROM users WHERE user_id = $1`, [userId]);
+      let user = savedUsers.rows.map((row) => {
+        return { userId: row.user_id, passwordHash: row.password_hash };
+      })[0];
 
-        const expectedUser = {"user_id": userId, "password_hash": newPasswordHash}
-        const updatedUsers = await users.db.query(`SELECT user_id, password_hash FROM users WHERE user_id = $1`, [userId]);
+      const newPasswordHash = argon2.hashSync("salasana");
+      user.passwordHash = newPasswordHash;
+      await users.save(user);
 
-        expect(updatedUsers.rows[0]).to.deep.equal(expectedUser);
-      });
+      const expectedUser = { user_id: userId, password_hash: newPasswordHash };
+      const updatedUsers = await users.db.query(`SELECT user_id, password_hash FROM users WHERE user_id = $1`, [
+        userId,
+      ]);
 
-      test("finds 0 users if id doesn't match", async () => {
-        const user = await users.getById(1);
-        expect(user).to.be.a("null");
-      });
+      expect(updatedUsers.rows[0]).to.deep.equal(expectedUser);
+    });
 
-      test("returns an object if user exists", async () => {
-        const userId = 1;
-        const passwordHash = argon2.hashSync("password");
-        await users.save({userId, passwordHash});
+    test("finds 0 users if id doesn't match", async () => {
+      const user = await users.getById(1);
+      expect(user).to.be.a("null");
+    });
 
-        const user = await users.getById(1);
-        expect(user).to.be.a("object");
-      });
+    test("returns an object if user exists", async () => {
+      const userId = 1;
+      const passwordHash = argon2.hashSync("password");
+      await users.save({ userId, passwordHash });
 
-      test("returns all keys if user exists", async () => {
-        const userId = 1;
-        const passwordHash = argon2.hashSync("password");
-        await users.save({userId, passwordHash});
+      const user = await users.getById(1);
+      expect(user).to.be.a("object");
+    });
 
-        const user = await users.getById(1);
-        expect(user).to.have.all.keys("userId", "passwordHash");
-      });
-    })
+    test("returns all keys if user exists", async () => {
+      const userId = 1;
+      const passwordHash = argon2.hashSync("password");
+      await users.save({ userId, passwordHash });
 
-    describe("Password service", () => {
-      let service;
-      let users;
-      beforeEach(() => {
-        service = new PasswordService();
-        users = PostgresUserDao.getInstance();
-      });
+      const user = await users.getById(1);
+      expect(user).to.have.all.keys("userId", "passwordHash");
+    });
+  });
 
-      afterEach(() => {
-         PostgresUserDao.getInstance().close();
-       });
+  describe("Password service", () => {
+    let service;
+    const userId = 1;
+    const passwordHash = argon2.hashSync("password");
 
-      test("switches password with correct parameters", async () => {
-        const userId = 1;
-        const passwordHash = argon2.hashSync("password");
-        await users.db.query(`INSERT INTO users (user_id, password_hash) VALUES ($1, $2)`, [userId, passwordHash]);
+    beforeEach(async () => {
+      service = new PasswordService();
+      await PostgresUserDao.getInstance().db.query(`INSERT INTO users (user_id, password_hash) VALUES ($1, $2)`, [userId, passwordHash]);
+    });
 
-        service.changePassword(userId, "password", "salasana");
+    afterEach(async () => {
+      await PostgresUserDao.getInstance().db.query("DELETE FROM users");
+      PostgresUserDao.getInstance().close();
+    });
 
-        const result = await users.db.query(`SELECT password_hash FROM users WHERE user_id = $1`, [userId]);
-        const user = result.rows[0];
+    test("switches password with correct parameters", async () => {
 
-        expect(user.password_hash).to.not.equal(passwordHash);
+      service.changePassword(userId, "password", "salasana");
 
-      })
-    })
+      const result = await PostgresUserDao.getInstance().db.query(`SELECT password_hash FROM users WHERE user_id = $1`, [userId]);
+      const user = result.rows[0];
+
+      expect(user.password_hash).to.not.equal(passwordHash);
+    });
+
+    test("throws error with wrong old password", async () => {
+      await expect(service.changePassword.bind(service, userId, "wordpass", "salasana")).rejects.toThrowError("wrong old password");
+    });
+  });
 });
