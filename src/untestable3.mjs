@@ -1,4 +1,4 @@
-import { readFile, access, constants} from "node:fs/promises";
+import { readFile, access, constants } from "node:fs/promises";
 import { parse } from "csv-parse/sync";
 
 export async function parsePeopleCsv(filePath) {
@@ -33,13 +33,13 @@ export async function testableReadFile(filePath) {
   let data;
 
   try {
-    data = await readFile(filePath, { encoding: "utf-8"});
+    data = await readFile(filePath, { encoding: "utf-8" });
   } catch (error) {
     throw new Error("invalid file path or non-existent file");
   }
 
-  return data
-};
+  return data;
+}
 
 export function testableParsePeopleCsv(csvData) {
   const records = parse(csvData, {

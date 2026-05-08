@@ -49,7 +49,7 @@ export function testableDiceRoll(min, max) {
     throw new Error("minimum has to be a number");
   } else if (typeof max !== "number") {
     throw new Error("maximum has to be a number");
-  };
+  }
 
   return Math.floor(Math.random() * (max + 1 - min) + min);
 }
