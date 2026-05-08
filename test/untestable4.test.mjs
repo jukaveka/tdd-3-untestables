@@ -57,12 +57,12 @@ describe("Untestable 4: enterprise application", () => {
         const updatedUsers = await users.db.query(`SELECT user_id, password_hash FROM users WHERE user_id = $1`, [userId]);
 
         expect(updatedUsers.rows[0]).to.deep.equal(expectedUser);
-      })
+      });
 
       test("finds 0 users if id doesn't match", async () => {
         const user = await users.getById(1);
         expect(user).to.be.a("null");
-      })
+      });
 
       test("returns an object if user exists", async () => {
         const userId = 1;
@@ -71,7 +71,16 @@ describe("Untestable 4: enterprise application", () => {
 
         const user = await users.getById(1);
         expect(user).to.be.a("object");
-      })
+      });
+
+      test("returns all keys if user exists", async () => {
+        const userId = 1;
+        const passwordHash = argon2.hashSync("password");
+        await users.save({userId, passwordHash});
+
+        const user = await users.getById(1);
+        expect(user).to.have.all.keys("userId", "passwordHash");
+      });
     })
 
     describe("Password service", () => {
