@@ -22,6 +22,7 @@ export class PostgresUserDao {
 
   close() {
     this.db.end();
+    PostgresUserDao.instance = null;
   }
 
   #rowToUser(row) {
@@ -74,4 +75,4 @@ export class PasswordService {
 // before each test, and remove the database (or table(s)) after each test.
 //
 // Perhaps the DB connection could also be separated from the User data access object class?
-// I have to say, I have hard time finding stuff to refactor in the code itself.
+// I have hard time finding stuff to refactor in the code itself.
