@@ -57,6 +57,11 @@ describe("Untestable 4: enterprise application", () => {
 
         expect(updatedUsers.rows[0]).to.deep.equal(expectedUser);
       })
+
+      test("finds 0 users if id doesn't match", async () => {
+        const user = await users.getById(1);
+        expect(user).to.be.empty();
+      })
     })
 
     describe("Password service", () => {
