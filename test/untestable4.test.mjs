@@ -85,16 +85,28 @@ describe("Untestable 4: enterprise application", () => {
 
     describe("Password service", () => {
       let service;
+      let users;
       beforeEach(() => {
         service = new PasswordService();
+        users = PostgresUserDao.getInstance();
       });
 
       afterEach(() => {
          PostgresUserDao.getInstance().close();
        });
 
-      test("todo", () => {
-        //nii
+      test("switches password with correct parameters", async () => {
+        const userId = 1;
+        const passwordHash = argon2.hashSync("password");
+        await users.db.query(`INSERT INTO users (user_id, password_hash) VALUES ($1, $2)`, [userId, passwordHash]);
+
+        service.changePassword(userId, "password", "salasana");
+
+        const result = await users.db.query(`SELECT password_hash FROM users WHERE user_id = $1`, [userId]);
+        const user = result.rows[0];
+
+        expect(user.password_hash).to.not.equal(passwordHash);
+
       })
     })
 });
