@@ -72,3 +72,6 @@ export class PasswordService {
 //
 // Instead, we should initialize database (or perhaps just tables we want to test)
 // before each test, and remove the database (or table(s)) after each test.
+//
+// Perhaps the DB connection could also be separated from the User data access object class?
+// I have to say, I have hard time finding stuff to refactor in the code itself.
