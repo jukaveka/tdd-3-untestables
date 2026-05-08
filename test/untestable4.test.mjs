@@ -18,7 +18,7 @@ describe("Untestable 4: enterprise application", () => {
   
       test ("saves new user", async () => {
         const userId = 1;
-        const passwordHash = await argon2.hash("password");
+        const passwordHash = argon2.hashSync("password");
 
         await users.save({ userId, passwordHash });
 
@@ -29,7 +29,7 @@ describe("Untestable 4: enterprise application", () => {
 
       test ("saves values correctly", async () => {
         const userId = 1;
-        const passwordHash = await argon2.hash("password");
+        const passwordHash = argon2.hashSync("password");
         const user = {"userid": userId, "passwordhash": passwordHash};
 
         await users.save({ userId, passwordHash });
@@ -37,6 +37,25 @@ describe("Untestable 4: enterprise application", () => {
         const result = await users.db.query(`SELECT user_id as userId, password_hash as passwordHash FROM users WHERE user_id = $1`, [userId]);
 
         expect(result.rows[0]).to.deep.equal(user);
+      })
+
+      test ("updates values if user already exists", async () => {
+        const userId = 1;
+        const passwordHash = argon2.hashSync("password");
+        const oldUser = {userId, passwordHash};
+        await users.save(oldUser);
+
+        const savedUsers = await users.db.query(`SELECT user_id, password_hash FROM users WHERE user_id = $1`, [userId]);
+        let user = savedUsers.rows.map((row) => {return {userId: row.user_id, passwordHash: row.password_hash}})[0];
+
+        const newPasswordHash = argon2.hashSync("salasana");
+        user.passwordHash = newPasswordHash;
+        await users.save(user);
+
+        const expectedUser = {"user_id": userId, "password_hash": newPasswordHash}
+        const updatedUsers = await users.db.query(`SELECT user_id, password_hash FROM users WHERE user_id = $1`, [userId]);
+
+        expect(updatedUsers.rows[0]).to.deep.equal(expectedUser);
       })
     })
 
