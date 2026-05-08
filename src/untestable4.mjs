@@ -1,5 +1,6 @@
 import argon2 from "@node-rs/argon2";
 import pg from "pg";
+require("dotenv").config({ override: true });
 
 export class PostgresUserDao {
   static instance;
