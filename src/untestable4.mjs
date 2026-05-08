@@ -60,3 +60,14 @@ export class PasswordService {
     await this.users.save(user);
   }
 }
+
+// Database interactions seem to be the hard thing to test here.
+//
+// We could just create test database and test against it, but the data would persist,
+// and our tests would need to reflect that, coupling the tests together.
+//
+// We could also clear the database after each operation, but this would still
+// cause concurrency issues if common cloud-based test database is shared with multiple developers.
+//
+// Instead, we should initialize database (or perhaps just tables we want to test)
+// before each test, and remove the database (or table(s)) after each test.
